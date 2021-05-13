@@ -1,20 +1,29 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {useHistory, Link} from 'react-router-dom';
+import {useHistory, Link, Route} from 'react-router-dom';
+
 import FirebaseContext from '../context/firebase';
+import * as ROUTES from '../constants/routes';
 
 const Login = () => {
     const history = useHistory();
-    const firebase = useContext(FirebaseContext);
+    const {firebase} = useContext(FirebaseContext);
 
     const [emailAddress, setEmailAddress] = useState('');
     const [password, setPassword] = useState('');
-    console.log(password);
     const [error, setError] = useState('');
     const isInvalid = password === '' || emailAddress ==='' ;
-    console.log(isInvalid);
 
-    const handleLogin = () => {
-        console.log('handleSubmit');
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try{
+            await firebase.auth().signInWithEmailAndPassword(emailAddress, password);
+            history.push(ROUTES.DASHBOARD);
+        } catch (err) {
+            setEmailAddress('');
+            setPassword('');
+            setError(err.message)
+        }
+
     };
 
     useEffect (() => {
@@ -32,7 +41,7 @@ const Login = () => {
                     <h1 className='flex justify-center w-full'>
                         <img src='/images/logo.png'/>
                     </h1>
-
+                    {error && <p className='mb-4 text-red-primary text-xs' >{error}</p>}
                     <form onSubmit={handleLogin} method='POST'>
                         <input
                             aria-label='Enter your email address'
@@ -63,7 +72,7 @@ const Login = () => {
                 
                 <p className='border rounded border-gray-primary text-center my-3 py-3 bg-white'>
                     Dont have account? {` `}  
-                    <Link to='/signup' className='font-bold text-blue-medium' >
+                    <Link to={ROUTES.SIGN_UP} className='font-bold text-blue-medium' >
                         Sign up
                     </Link>
                 </p>

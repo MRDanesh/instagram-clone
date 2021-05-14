@@ -18,6 +18,9 @@ const Login = () => {
         try{
             await firebase.auth().signInWithEmailAndPassword(emailAddress, password);
             history.push(ROUTES.DASHBOARD);
+
+            firebase.auth().onAuthStateChanged((user) => console.log(user));
+
         } catch (err) {
             setEmailAddress('');
             setPassword('');

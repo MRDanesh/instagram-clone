@@ -42,6 +42,7 @@ const Login = () => {
                     fullName,
                     emailAddress: emailAddress.toLowerCase(),
                     following:[],
+                    followers:[],
                     dateCreated: Date.now()
                 });
                 

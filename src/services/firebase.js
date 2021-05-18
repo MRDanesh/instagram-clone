@@ -12,3 +12,28 @@ export const doesUsernameExist = async (username) => {
         return true;
     }
 };
+
+export const getUserByUserId = async (userId) => {
+    const result = await firebase.
+    firestore().collection('users').where('userId', '==', userId).get();
+    const user = result.docs.map((item) => ({
+        ...item.data(),
+        docId: item.id
+    }));
+
+    return user;
+}
+
+export const getSuggestedProfiles = async (userId, following) => {
+    const result = await firebase.
+    firestore().collection('users').limit(10).get();
+    const allUsers = result.docs.map((user) => user.data());
+    // filter only not following and not myself
+
+    const suggestedUsers = allUsers.filter((user) => {
+        if (user.userId !== userId && !following.includes(user.userId)  ) {
+            return user;
+        }
+    });
+    return suggestedUsers;
+};

@@ -5,7 +5,7 @@ import {getSuggestedProfiles} from '../../services/firebase';
 
 import SuggestedProfiles from './SuggestedProfiles';
 
-const Suggestions = ({userId, following}) => {
+const Suggestions = ({userId, following, loggedInUserDocId}) => {
     const [profiles, setProfiles] = useState(null);
 
     useEffect(() => {
@@ -32,13 +32,15 @@ const Suggestions = ({userId, following}) => {
                 </div>
                 <div className='mt-4 grid gap-5'>
                     {profiles.map((profile) => (
-                        <SuggestedProfiles
-                        key={profile.docId}
-                        userDocId={profile.docId}
-                        username={profile.username}
-                        profileId={profile.userId}
-                        userId={userId}
+                        <div key={profile.docId}>
+                            <SuggestedProfiles
+                            profileDocId={profile.docId}
+                            username={profile.username}
+                            profileId={profile.userId}
+                            userId={userId}
+                            loggedInUserDocId = {loggedInUserDocId}
                         />
+                        </div>
                     ))}
                 </div>
             </div>

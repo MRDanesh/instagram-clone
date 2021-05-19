@@ -1,8 +1,17 @@
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 
-const SuggestedProfiles = ({userDocId, key, username, profileId, userId}) => {
+import {updateLoggedInUserFollowing, updateFollowedUserFollowers} from '../../services/firebase';
+
+const SuggestedProfiles = ({profileDocId, key, username, profileId, userId, loggedInUserDocId}) => {
     const [followed, setFollowed] = useState(false);
+
+    const handleFollowUser = async () => {
+        setFollowed(true);
+
+        await updateLoggedInUserFollowing(loggedInUserDocId, profileId, false);
+        await updateFollowedUserFollowers(profileDocId, userId);
+    }
 
     return !followed ? (
         <div className='flex flex-row items-center justify-between'>
@@ -18,7 +27,7 @@ const SuggestedProfiles = ({userDocId, key, username, profileId, userId}) => {
             <button
                 className='font-bold text-sm text-blue-medium'
                 type='button'
-                onClick={() => console.log('Followed!')}
+                onClick={() => handleFollowUser()}
             >
                 Follow
             </button>

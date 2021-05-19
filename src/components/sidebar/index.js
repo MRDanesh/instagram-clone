@@ -8,12 +8,12 @@ import Suggestions from './Suggestions';
 const Sidebar = () => {
 
     const {user} = useUser();
-    const {fullName, userId, username, following} = user;
+    const {fullName, userId, username, following, docId} = user;
 
     return (
         <div className=' container col-span-1'>
             <User fullName = {fullName} userId = {userId} userName={username}/>
-            <Suggestions userId = {userId} following = {following} />
+            <Suggestions userId = {userId} following = {following} loggedInUserDocId = {docId} />
         </div>
     );
 };

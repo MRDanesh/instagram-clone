@@ -8,7 +8,7 @@ const usePhotos = async () => {
     const {user} = useContext(UserContext);
     const userId = user.uid;
 
-    useEffect( async () => {
+    useEffect( () => {
         const getTimeLinePhotos = async () => {
             const [{following}] = await getUserByUserId(userId);
             let followedUserPhotos = [];
@@ -16,14 +16,11 @@ const usePhotos = async () => {
             if (following.length > 0) {
                 followedUserPhotos = await getPhotos(userId, following);
                 setPhotos(followedUserPhotos);
-            } else{
-                setPhotos(null);
             }
         };
 
-        await getTimeLinePhotos();
-    },[]);
-    console.log(photos)
+        getTimeLinePhotos();
+    },[userId]);
     return {photos};
 };
 

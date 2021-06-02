@@ -85,8 +85,9 @@ export const getPhotos = async (userId, following) => {
             }
             const user = await getUserByUserId(photo.userId);
             const {username} = user[0];
-            return {username, ...photo, userLikedPhoto}
+            return {username, ...photo, userLikedPhoto};
         }
     ));
-    return photosWithUserDetails;
+    const photosRes = await photosWithUserDetails.then(res => res);
+    return photosRes;
 }
